@@ -1,0 +1,20 @@
+.button-container{
+    display: flex;
+    justify-content:flex-end;
+}
+
+.input-container{
+    padding:1rem;
+}
+
+h2{
+    text-align: center;
+    margin-bottom: 0px;
+}
+
+.link{
+    text-decoration: none;
+    align-self: center;
+    padding: 2rem;
+    color: black;
+}
