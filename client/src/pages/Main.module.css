@@ -1,0 +1,25 @@
+.main {
+  width: 70%;
+  height: auto;
+  margin: auto;
+}
+
+@media (min-width: 678px) {
+  .main {
+    width: 90vw;
+    height: fit-content;
+    display: grid;
+    grid-template-columns: auto auto;
+    margin: auto;
+  }
+}
+@media (min-width: 1110px) {
+  .main {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    justify-content: left;
+    width: 90vw;
+    height: fit-content;
+    margin: auto;
+  }
+}

@@ -1,0 +1,47 @@
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3rem;
+  background-color: orange;
+  height: 8vh;
+}
+.header h1 {
+  color: rgba(113, 4, 127, 0.918);
+  white-space: nowrap;
+}
+
+.header a {
+  text-decoration: none;
+}
+
+.list {
+  list-style-type: none;
+  display: inherit;
+}
+
+.list li {
+  white-space: nowrap;
+  margin: 1rem;
+}
+
+.list a {
+  text-decoration: none;
+  color: black;
+}
+
+.list a:hover {
+  color: rgba(113, 4, 127, 0.918);
+  text-decoration: underline;
+}
+
+@media (max-width: 1110px) {
+  .header {
+    justify-content: space-around;
+  }
+  .header h1 {
+    font-size: 4vw;
+    white-space: nowrap;
+    width: max-content;
+  }
+}
