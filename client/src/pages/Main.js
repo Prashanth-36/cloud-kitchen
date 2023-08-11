@@ -2,14 +2,22 @@ import KitchenList from "../components/KitchenList";
 import classes from "./Main.module.css";
 import Header from "../components/Layouts/Header";
 import { getToken, getTokenDuration } from "../util/sessionHandler";
+import SearchElement from "../components/SearchElement";
+import { useState } from "react";
 
 const Main = () => {
   document.title = "Cloud Kitchen";
+
+  const [location, setLocation] = useState("none");
+
   return (
     <>
-      <Header />
+      <div className={classes["background-container"]}>
+        <Header className={classes.header} />
+        <SearchElement location={location} setLocation={setLocation} />
+      </div>
       <main className={classes.main}>
-        <KitchenList />
+        <KitchenList location={location} />
       </main>
     </>
   );

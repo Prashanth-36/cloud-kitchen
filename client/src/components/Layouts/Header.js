@@ -1,51 +1,41 @@
-import { NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import classes from "./Header.module.css";
 import { tokenPayload } from "../../util/sessionHandler";
 import { useContext } from "react";
 import CartContext from "../../store/cart-context";
-const Header = ({ kitchenId }) => {
+const Header = ({ className }) => {
   const ctx = useContext(CartContext);
   const payload = tokenPayload();
-  const isUser = payload && payload.privilege === "user";
   const isOwner = payload && payload.privilege === "owner";
   const name = payload && payload.name;
   const logout = () => {
     ctx.logout();
   };
-  const location = useLocation().pathname;
+  const kitchenId = payload && payload.kitchenId;
   return (
-    <header className={classes.header}>
+    <header className={`${classes.header} ${className ? className : ""}`}>
       <NavLink to="/" end>
         <h1>Cloud Kitchen</h1>
       </NavLink>
       <ul className={classes.list}>
         {ctx.isLoggedIn ? (
           <>
-            {location === "/my-kitchen" ? (
-              <li>
-                <NavLink to={"/view-orders/" + kitchenId} end>
-                  View Orders
-                </NavLink>
-              </li>
-            ) : (
-              <>
-                {isUser && (
-                  <li>
-                    <NavLink to="/new-kitchen" end>
-                      Add Kitchen
-                    </NavLink>
-                  </li>
-                )}
+            <li className={classes.dropdown}>
+              Hello! {name}
+              <div className={classes["dropdown-items"]}>
+                <Link to="/edit-account">My Account</Link>
                 {isOwner && (
-                  <li>
+                  <>
                     <NavLink to="/my-kitchen" end>
                       My Kitchen
                     </NavLink>
-                  </li>
+                    <NavLink to={"/view-orders/" + kitchenId} end>
+                      View Orders
+                    </NavLink>
+                  </>
                 )}
-              </>
-            )}
-            <li>Hello! {name}</li>
+              </div>
+            </li>
             <li style={{ color: "red" }}>
               <NavLink to="/logout" onClick={logout}>
                 Logout

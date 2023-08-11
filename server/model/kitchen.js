@@ -12,7 +12,7 @@ const Kitchen = mongoose.Schema({
     required: [true, "Image url is required"],
     trim: true,
   },
-  cousineType: { type: String },
+  cuisineType: { type: String },
   location: { type: String, required: true, trim: true },
   menuItems: [
     {

@@ -24,4 +24,11 @@ const tokenPayload = () => {
   return JSON.parse(atob(token.split(".")[1]));
 };
 
-export { getToken, tokenLoader, tokenPayload, getTokenDuration };
+const setToken = (token) => {
+  localStorage.setItem("token", token);
+  const expiration = new Date();
+  expiration.setHours(expiration.getHours() + 1);
+  localStorage.setItem("expireTime", expiration);
+};
+
+export { getToken, tokenLoader, tokenPayload, getTokenDuration, setToken };

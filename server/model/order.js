@@ -38,6 +38,7 @@ const order = new Schema({
   instructions: String,
   number: { type: String, required: [true, "Couldn't receive number"] },
   address: { type: String, required: [true, "Couldn't receive address"] },
+  status: { type: String, default: "pending" },
 });
 
 module.exports = mongoose.model("order", order);

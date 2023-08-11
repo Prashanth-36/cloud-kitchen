@@ -20,7 +20,19 @@ const getOrders = async (req, res) => {
       kitchenId: new mongoose.Types.ObjectId(id),
     });
     return res.status(200).json(orderData);
-  } catch (error) {}
+  } catch (error) {
+    res.status(500).send(error);
+  }
 };
 
-module.exports = { placeOrder, getOrders };
+const orderStatusUpdate = async (req, res) => {
+  try {
+    const id = req.body.id;
+    await Order.updateOne({ _id: id }, { $set: { status: "completed" } });
+    return res.status(200).json({ message: "Updated status successfully." });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+module.exports = { placeOrder, getOrders, orderStatusUpdate };

@@ -11,6 +11,7 @@ import Input from "../UI/Input";
 import Button from "../UI/Button";
 import Card from "../UI/Card";
 import { useRef, useState } from "react";
+import { setToken } from "../../util/sessionHandler";
 
 const AuthForm = () => {
   const [searchParams] = useSearchParams();
@@ -126,10 +127,7 @@ export const action = async ({ request }) => {
   }
   const token = await response.json();
   if (token) {
-    localStorage.setItem("token", token);
-    const expiration = new Date();
-    expiration.setHours(expiration.getHours() + 1);
-    localStorage.setItem("expireTime", expiration);
+    setToken(token);
   }
   const privilege = JSON.parse(atob(token.split(".")[1])).privilege;
   if (privilege === "user") {

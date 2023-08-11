@@ -1,6 +1,8 @@
 const User = require("../model/user");
+const Kitchen = require("../model/kitchen");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const mongoose = require("mongoose");
 
 const login = async (req, res) => {
   try {
@@ -22,6 +24,12 @@ const login = async (req, res) => {
           name: user.name,
           privilege: user.privilege,
         };
+        if (user.privilege === "owner") {
+          const kitchen = await Kitchen.findOne({
+            ownerId: new mongoose.Types.ObjectId(user._id),
+          });
+          payload.kitchenId = kitchen._id;
+        }
         const token = await generateToken(payload);
         res.status(200).json(token);
       } else {
@@ -83,4 +91,37 @@ const generateToken = (payload) => {
   });
 };
 
-module.exports = { login, signin, generateToken };
+const editUser = async (req, res) => {
+  try {
+    const data = req.body;
+    const currentPassword = await User.findOne(
+      { _id: req.user.userId },
+      { password: 1, _id: 0 }
+    );
+    if (data.password) {
+      if (await bcrypt.compare(data.oldPassword, currentPassword.password)) {
+        const salt = await bcrypt.genSalt(10);
+        const hashPassword = await bcrypt.hash(data.password, salt);
+        data.password = hashPassword;
+      } else {
+        return res
+          .status(422)
+          .json({ message: "Entered current password is invalid." });
+      }
+    }
+    await User.updateOne({ _id: req.user.userId }, { $set: data });
+    const updatedUser = await User.findOne({ _id: req.user.userId });
+    const payload = {
+      number: updatedUser.number,
+      userId: updatedUser._id,
+      name: updatedUser.name,
+      privilege: updatedUser.privilege,
+    };
+    const token = await generateToken(payload);
+    return res.status(200).json(token);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+};
+
+module.exports = { login, signin, generateToken, editUser };

@@ -29,7 +29,7 @@ const DishForm = ({ item = {}, method }) => {
         data[attr] = formData[attr];
       }
     }
-    submit({ ...data, id: item._id }, { method: "patch" });
+    submit({ ...data, id: item._id }, { method: "PATCH" });
   };
 
   return (

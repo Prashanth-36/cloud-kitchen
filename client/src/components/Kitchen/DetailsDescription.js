@@ -6,6 +6,10 @@ import Button from "../UI/Button";
 
 const DetailsDescription = ({ loaderData }) => {
   const isMyKitchen = useLocation().pathname === "/my-kitchen";
+  const backgroundErrorHandler = (event) => {
+    event.target.src =
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCDQ22xgk2PYGS_Y1OvfRUabKICuRBTP5HzgegXADIaf2qU_RIiOpTi5iwMge1-hAhOw4&usqp=CAU";
+  };
   return (
     <>
       <div className={classes["about-container"]}>
@@ -13,18 +17,24 @@ const DetailsDescription = ({ loaderData }) => {
         <img
           alt="backgroud"
           className={classes["background-image"]}
-          src="https://hips.hearstapps.com/hmg-prod/images/farmhouse-kitchen-ideas-1559837619.jpg?crop=1.00xw:0.754xh;0,0.0659xh&resize=1200:*"
+          src={loaderData.image}
+          onError={backgroundErrorHandler}
         />
         <Card className={classes.about}>
           <h3>{loaderData.name}</h3>
           <p>{loaderData.location}</p>
           <p>{loaderData.cuisineType}</p>
           {isMyKitchen && (
-            <div className={classes["button-container"]}>
-              <Link to="/add-dish">
-                <Button>+Add New Dish</Button>
+            <>
+              <Link to="/edit-kitchen" state={loaderData}>
+                <Button className={classes.edit}>Edit</Button>
               </Link>
-            </div>
+              <div className={classes["button-container"]}>
+                <Link to="/add-dish">
+                  <Button>+Add New Dish</Button>
+                </Link>
+              </div>
+            </>
           )}
         </Card>
       </div>

@@ -7,10 +7,10 @@ import Header from "../components/Layouts/Header";
 
 const MyKitchen = () => {
   const data = useLoaderData();
-  
+
   return (
     <>
-      <Header kitchenId={data._id} />
+      <Header />
       <DetailsDescription loaderData={data} />
       <MealTypeList />
       <MyDishesList loaderData={data} />

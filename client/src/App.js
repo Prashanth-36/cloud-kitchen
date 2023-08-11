@@ -9,16 +9,19 @@ import Main, { loader as kitchensListLoader } from "./pages/Main";
 import Cart, { action as orderAction } from "./pages/Cart";
 import CartLayout from "./components/Layouts/CartLayout";
 import BackdropLayout from "./components/Layouts/BackdropLayout";
-import AddKitchenForm, {
-  action as addNewKitchenAction,
-} from "./components/Forms/AddKitchenForm";
 import ModifyDish, {
   action as ModifyDishAction,
 } from "./components/Kitchen/ModifyDish";
 import ErrorPage from "./components/ErrorPage";
 import MyKitchen, { loader as myKitchenLoader } from "./pages/MyKitchen";
 import { logout } from "./util/logout";
-import Orders, { loader as ordersLoader } from "./pages/Orders";
+import Orders from "./pages/Orders";
+import ModifyKitchen, {
+  action as modifyKitchenAction,
+} from "./components/Kitchen/ModifyKitchen";
+import EditAccountForm, {
+  action as editAccountAction,
+} from "./components/Forms/EditAccountForm";
 
 function App() {
   const router = createBrowserRouter([
@@ -36,6 +39,17 @@ function App() {
           ],
         },
         {
+          path: "/edit-account",
+          element: <BackdropLayout />,
+          children: [
+            {
+              index: true,
+              element: <EditAccountForm />,
+              action: editAccountAction,
+            },
+          ],
+        },
+        {
           path: "/logout",
           loader: logout,
         },
@@ -45,13 +59,24 @@ function App() {
           element: <KitchenDetails />,
         },
         {
-          path: "/new-kitchen",
+          path: "/add-kitchen",
           element: <BackdropLayout />,
           children: [
             {
               index: true,
-              action: addNewKitchenAction,
-              element: <AddKitchenForm />,
+              action: modifyKitchenAction,
+              element: <ModifyKitchen />,
+            },
+          ],
+        },
+        {
+          path: "/edit-kitchen",
+          element: <BackdropLayout />,
+          children: [
+            {
+              index: true,
+              action: modifyKitchenAction,
+              element: <ModifyKitchen />,
             },
           ],
         },
@@ -90,7 +115,6 @@ function App() {
         {
           path: "/view-orders/:id",
           element: <Orders />,
-          loader: ordersLoader,
         },
       ],
     },

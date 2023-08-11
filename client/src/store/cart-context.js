@@ -8,7 +8,7 @@ const defaultData = {
   kitchenId: "",
   date: new Date(new Date().setHours(0, 0, 0, 0)),
   changeDate: (date) => {},
-  slot: 0,
+  slot: "",
   items: [],
   addItemToCart: (item) => {},
   removeItemFromCart: (id) => {},

@@ -15,7 +15,7 @@
 
 .background-image {
   width: 100vw;
-  height: 70vh;
+  height: 80vh;
 }
 
 .main {
@@ -29,6 +29,12 @@
   display: flex;
   justify-content: flex-end;
   width: 100%;
+}
+
+.edit {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
 }
 
 @media (min-width: 1110px) {

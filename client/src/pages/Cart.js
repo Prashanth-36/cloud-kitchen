@@ -21,8 +21,6 @@ const Cart = () => {
 
   const placeOrder = () => {
     const data = JSON.stringify({ ...ctx, mealType: mealType });
-    console.log(data);
-    console.log(ctx);
     if (validateCartSubmit(data)) {
     }
     submit({ data }, { method: "post" });

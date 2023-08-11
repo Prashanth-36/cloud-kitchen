@@ -6,8 +6,14 @@
   background-color: orange;
   height: 8vh;
 }
-.header h1 {
-  color: rgba(113, 4, 127, 0.918);
+.header h1,
+.list li,
+.list a {
+  color: white;
+  margin: 1rem;
+  padding: 0.5rem;
+  font-weight: 800;
+  text-shadow: 2px 2px 5px black;
   white-space: nowrap;
 }
 
@@ -20,18 +26,33 @@
   display: inherit;
 }
 
-.list li {
-  white-space: nowrap;
-  margin: 1rem;
+.dropdown-items {
+  display: none;
+  position: absolute;
+  z-index: 2;
+  margin-top: 0.5rem;
+  margin-left: -0.5rem;
 }
 
-.list a {
-  text-decoration: none;
+.dropdown-items a {
   color: black;
+  text-shadow: none;
+  padding: 0 0.5rem;
+  display: block;
+}
+.dropdown-items a:hover {
+  color: orange;
+  text-shadow: none;
+  text-decoration: none !important;
+}
+
+.dropdown:hover .dropdown-items {
+  display: block;
+  background-color: whitesmoke;
+  border-radius: 0.5rem;
 }
 
 .list a:hover {
-  color: rgba(113, 4, 127, 0.918);
   text-decoration: underline;
 }
 

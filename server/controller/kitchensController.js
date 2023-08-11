@@ -1,4 +1,5 @@
 const Kitchen = require("../model/kitchen");
+const Order = require("../model/order");
 const mongoose = require("mongoose");
 const User = require("../model/user");
 const { generateToken } = require("./authController");
@@ -62,7 +63,7 @@ const addKitchen = async (req, res) => {
   try {
     const data = { ...req.body, ownerId: req.user.userId };
     session.startTransaction();
-    await Kitchen.create(data);
+    const kitchen = await Kitchen.create(data);
     await User.updateOne(
       { _id: req.user.userId },
       { $set: { privilege: "owner" } }
@@ -72,6 +73,8 @@ const addKitchen = async (req, res) => {
       userId: userData._id,
       privilege: userData.privilege,
       name: userData.name,
+      kitchenId: kitchen._id,
+      number: userData.number,
     };
     const token = await generateToken(payload);
     res.status(201).json(token);
@@ -81,6 +84,41 @@ const addKitchen = async (req, res) => {
     res.status(500).send(error);
   } finally {
     await session.endSession();
+  }
+};
+
+const editKitchen = async (req, res) => {
+  try {
+    const modifiedData = req.body;
+    const id = modifiedData.id;
+    delete modifiedData.id;
+    await Kitchen.updateOne({ _id: id }, { $set: modifiedData });
+    res.status(200).json({ message: "Editted Successfully" });
+  } catch (error) {
+    res.status(500).send(error);
+  }
+};
+
+const removeKitchen = async (req, res) => {
+  try {
+    const kitchenId = req.user.kitchenId;
+    const userId = req.user.userId;
+    await Kitchen.deleteOne({ _id: kitchenId });
+    await User.updateOne({ _id: userId }, { $set: { privilege: "user" } });
+    await Order.deleteMany({
+      kitchenId: new mongoose.Types.ObjectId(kitchenId),
+    });
+    const updatedUser = await User.findOne({ _id: req.user.userId });
+    const payload = {
+      userId: updatedUser._id,
+      name: updatedUser.name,
+      privilege: updatedUser.privilege,
+      number: updatedUser.number,
+    };
+    const token = await generateToken(payload);
+    res.status(200).json(token);
+  } catch (error) {
+    res.status(500).send(error);
   }
 };
 
@@ -100,7 +138,7 @@ const addDish = async (req, res) => {
 const removeDish = async (req, res) => {
   try {
     const id = req.params.id;
-    const result = await Kitchen.updateOne(
+    await Kitchen.updateOne(
       { ownerId: req.user.userId },
       { $pull: { menuItems: { _id: new mongoose.Types.ObjectId(id) } } }
     );
@@ -142,4 +180,6 @@ module.exports = {
   addDish,
   editDish,
   removeDish,
+  editKitchen,
+  removeKitchen,
 };

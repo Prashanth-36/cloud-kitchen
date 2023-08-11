@@ -10,6 +10,12 @@ const DishesElement = ({ item, kitchen }) => {
   let prdt = ctx.items.filter((carItem) => item._id === carItem._id);
   let quantity = prdt.length > 0 ? prdt[0].quantity : 0;
   const navigate = useNavigate();
+
+  const backgroundErrorHandler = (event) => {
+    event.target.src =
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCDQ22xgk2PYGS_Y1OvfRUabKICuRBTP5HzgegXADIaf2qU_RIiOpTi5iwMge1-hAhOw4&usqp=CAU";
+  };
+
   const addButtonHandler = () => {
     if (!ctx.isLoggedIn) {
       return navigate("/auth?mode=login");
@@ -25,7 +31,7 @@ const DishesElement = ({ item, kitchen }) => {
         <p>{item.price}</p>
       </div>
       <div className={classes["image-container"]}>
-        <img alt={item.name} src={item.image} />
+        <img alt={item.name} src={item.image} onError={backgroundErrorHandler}/>
         {!quantity ? (
           <Button className={classes["add-button"]} onClick={addButtonHandler}>
             + Add

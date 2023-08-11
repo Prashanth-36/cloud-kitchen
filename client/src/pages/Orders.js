@@ -1,60 +1,74 @@
 import Header from "../components/Layouts/Header";
-import OrderItemsList from "../components/Order/OrderItemsList";
-import Card from "../components/UI/Card";
 import { getToken } from "../util/sessionHandler";
-import { useLoaderData } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import classes from "./Orders.module.css";
+import Button from "../components/UI/Button";
+import { useEffect, useState } from "react";
+import OrderDetatils from "../components/Order/OrderDetails";
 
 const Orders = () => {
-  const loaderData = useLoaderData();
+  const kitchenId = useParams().id;
+
+  const [oldOrders, setOldOrders] = useState(false);
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    loader(kitchenId)
+      .then((data) => setOrders(data))
+      .catch((error) => console.log(error));
+  }, [kitchenId]);
+
+  const completeHandler = async (id) => {
+    const token = "Bearer " + getToken();
+    const response = await fetch("http://localhost:5050/orders", {
+      method: "PATCH",
+      headers: { "content-type": "application/json", authorization: token },
+      body: JSON.stringify({ id }),
+    });
+    if (!response.ok) {
+      throw response;
+    }
+    loader(kitchenId)
+      .then((data) => setOrders(data))
+      .catch((error) => console.log(error));
+  };
+
+  const toggleOrderHistory = () => {
+    setOldOrders((prev) => !prev);
+  };
+
   return (
     <>
       <Header />
-      {loaderData.map((order) => (
-        <Card key={order._id} className={classes["order-container"]}>
-          <p>
-            <b>User Name: </b>
-            {order.userName}
-          </p>
-          <p>
-            <b>User Id: </b>
-            {order.userId}
-          </p>
-          <p>
-            <b>Order date: </b>
-            {new Date(order.date).toDateString()}
-          </p>
-          <p>
-            <b>Delivery Slot: </b>
-            {order.slot}
-          </p>
-          <p>
-            <b>Delivery Address: </b>
-            {order.address}
-          </p>
-          <p>
-            <b>Number: </b>
-            {order.number}
-          </p>
-          <p>
-            <b>Special Instructions: </b>
-            {order.instructions || "None"}
-          </p>
-          <OrderItemsList items={order.items} />
-          <p>
-            <b>Total Amount: ₹ </b>
-            {order.totalAmount}
-          </p>
-        </Card>
-      ))}
+      <Button onClick={toggleOrderHistory}>
+        {oldOrders ? "Hide Order History" : "View Order History"}
+      </Button>
+      <div className={classes.container}>
+        {oldOrders &&
+          orders
+            .filter((order) => order.status === "completed")
+            .map((oldOrders) => (
+              <OrderDetatils key={oldOrders._id} order={oldOrders} />
+            ))}
+      </div>
+      <div className={classes.container}>
+        {orders
+          .filter((order) => order.status === "pending")
+          .map((order) => (
+            <OrderDetatils
+              key={order._id}
+              completeHandler={completeHandler}
+              order={order}
+            />
+          ))}
+      </div>
     </>
   );
 };
 
 export default Orders;
 
-export const loader = async ({ params }) => {
-  const id = params.id;
+const loader = async (id) => {
   const response = await fetch("http://localhost:5050/orders/" + id, {
     method: "GET",
     headers: {
@@ -65,5 +79,6 @@ export const loader = async ({ params }) => {
   if (!response.ok) {
     throw response;
   }
-  return response;
+  const data = await response.json();
+  return data;
 };
