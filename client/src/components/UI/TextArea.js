@@ -21,6 +21,7 @@ const TextArea = (props) => {
         }}
         id={props.label}
         name={props.name}
+        required
       ></textarea>
     </>
   );

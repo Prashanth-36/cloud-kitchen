@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Card from "../components/UI/Card";
 import CartContext from "../store/cart-context";
 import Slots from "../components/Cart/Slots";
@@ -19,11 +19,16 @@ const Cart = () => {
   const mealType = ctx.items.length && ctx.items[0].mealType;
   const submit = useSubmit();
 
+  const [errors, setErrors] = useState(null);
+
   const placeOrder = () => {
-    const data = JSON.stringify({ ...ctx, mealType: mealType });
-    if (validateCartSubmit(data)) {
+    const items = ctx.items;
+    const data = { ...ctx, mealType: mealType, items };
+    const errors = validateCartSubmit(data);
+    if (Object.values(errors).length > 0) {
+      return setErrors(errors);
     }
-    submit({ data }, { method: "post" });
+    submit({ data: JSON.stringify(data) }, { method: "post" });
     ctx.clearCart();
   };
 
@@ -46,6 +51,7 @@ const Cart = () => {
             currentSlot={ctx.slot}
             setSlot={ctx.setSlot}
           />
+          <p className={classes.error}>{errors && errors.slot}</p>
           <div className={classes.details}>
             <TextArea
               onBlur={ctx.setInstructions}
@@ -57,6 +63,7 @@ const Cart = () => {
               defaultValue={ctx.address}
               label="Address:"
             />
+            <p className={classes.error}>{errors && errors.address}</p>
             <Input
               label="Mobile Number:"
               attr={{
@@ -66,6 +73,7 @@ const Cart = () => {
               }}
               onBlur={ctx.setNumber}
             />
+            <p className={classes.error}>{errors && errors.number}</p>
           </div>
         </Card>
         <div className={classes.payment}>

@@ -16,7 +16,7 @@ const KitchenElement = ({ item }) => {
       <div className={classes["item-description"]}>
         <h3>{item.name}</h3>
         <p>{item.location}</p>
-        <p>{item.cousineType}</p>
+        <p>{item.cuisineType}</p>
       </div>
     </Card>
   );

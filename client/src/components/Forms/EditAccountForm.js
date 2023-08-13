@@ -170,6 +170,12 @@ const EditAccountForm = () => {
               <Link to="/add-kitchen">Add Kitchen</Link>
             </Button>
           )}
+
+          {errors && <p className={classes.error}>{errors}</p>}
+          {actionData && <p className={classes.error}>{actionData.message}</p>}
+        </div>
+
+        <div className={classes["button-container"]}>
           {isOwner && (
             <Button
               type="button"
@@ -179,13 +185,8 @@ const EditAccountForm = () => {
               Remove Kitchen
             </Button>
           )}
-          {errors && <p className={classes.error}>{errors}</p>}
-          {actionData && <p className={classes.error}>{actionData.message}</p>}
-        </div>
-
-        <div className={classes["button-container"]}>
           <Button disabled={isSubmitting}>
-            {isSubmitting ? "Submitting..." : "Send"}
+            {isSubmitting ? "Submitting..." : "Save"}
           </Button>
         </div>
       </Form>

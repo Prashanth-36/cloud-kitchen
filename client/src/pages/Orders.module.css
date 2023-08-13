@@ -1,8 +1,8 @@
 .container {
   width: 90vw;
-  margin: 1rem auto;
-  display: flex;
-  flex-wrap: wrap;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 30vw 30vw 30vw;
 }
 
 @media (max-width: 1110px) {

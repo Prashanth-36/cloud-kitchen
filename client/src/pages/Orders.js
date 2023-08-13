@@ -51,6 +51,7 @@ const Orders = () => {
               <OrderDetatils key={oldOrders._id} order={oldOrders} />
             ))}
       </div>
+      <h1 style={{ textAlign: "center" }}>~~Pending Orders~~</h1>
       <div className={classes.container}>
         {orders
           .filter((order) => order.status === "pending")

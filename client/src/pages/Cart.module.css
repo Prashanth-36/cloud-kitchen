@@ -46,6 +46,10 @@
   border-color: rgb(218, 37, 37);
 }
 
+.error{
+  color: red;
+}
+
 @media (min-width: 1110px) {
   .container {
     width: 90vw;

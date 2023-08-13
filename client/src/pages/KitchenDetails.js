@@ -5,15 +5,14 @@ import DetailsDescription from "../components/Kitchen/DetailsDescription";
 import { json, useLoaderData } from "react-router-dom";
 
 const KitchenDetails = () => {
-
-  const loaderData=useLoaderData();
+  const loaderData = useLoaderData();
 
   return (
     <>
-      <DetailsDescription loaderData={loaderData}/>
+      <DetailsDescription loaderData={loaderData} />
       <DateElementsList />
       <MealTypeList />
-      <MenuItemsList loaderData={loaderData}/>
+      <MenuItemsList loaderData={loaderData} />
     </>
   );
 };
@@ -26,6 +25,5 @@ export const loader = async ({ params }) => {
     throw json({ message: "Cannot retreive kitchen deatails." });
   }
   const data = await response.json();
-  console.log(data);
   return data;
 };

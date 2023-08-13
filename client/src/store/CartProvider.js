@@ -29,13 +29,11 @@ const reducer = (state, action) => {
   switch (action.type) {
     case "MEAL_TYPE": {
       const updated = { ...state, mealType: action.data };
-      console.log(updated);
       return updated;
     }
 
     case "SET_DATE": {
       const updated = { ...state, date: action.data };
-      console.log(updated);
       return updated;
     }
 
@@ -75,7 +73,6 @@ const reducer = (state, action) => {
             kitchenId: action.kitchen.kitchenId,
             totalAmount: action.item.price,
           };
-          console.log(updated);
           return updated;
         } else {
           return state;
@@ -107,7 +104,6 @@ const reducer = (state, action) => {
           kitchen: action.kitchen.kitchen,
           kitchenId: action.kitchen.kitchenId,
         };
-        console.log("VALUE SAVED =", val);
         return val;
       }
     }
@@ -136,7 +132,6 @@ const reducer = (state, action) => {
         totalAmount: updatedTotalAmount,
         items: updatedItems,
       };
-      console.log("VALUE SAVED =", val);
       return val;
     }
 
